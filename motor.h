@@ -49,8 +49,8 @@ get_arm_sensor() {
 task
 pid_hold() {
 	while (true) {
-		update_pid(&arm_pid, get_arm_sensor(), arm_pid.f_des);
+		update_pid(&arm_pid, get_arm_sensor(), arm_pid.des);
 
-		set_lift(-arm_pid.i_motor_value);
+		set_lift(-arm_pid.motor_value);
 	}
 }

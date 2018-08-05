@@ -1,36 +1,36 @@
 #pragma systemFile
 
 typedef struct {
-	float f_current;
-	float k_p;
-	float f_integral;
-	float k_d;
-	float k_i;
-	float f_des;
-	float f_error;
-	float f_der;
-	float f_lasterror;
-	float f_threshold;
+	float current;
+	float kp;
+	float integral;
+	float kd;
+	float ki;
+	float des;
+	float error;
+	float der;
+	float lasterror;
+	float threshold;
 	int time;
-	int i_motor_value;
+	int motor_value;
 } pid_;
 
 void
-pid_init(pid_ *this, float kp, float ki, float kd) {
-	this->k_p = kp;
-	this->k_i = ki;
-	this->k_d = kd;
+pid_init(pid_ *this, float p, float i, float d) {
+	this->kp = p;
+	this->ki = i;
+	this->kd = d;
 }
 
 void
-update_pid(pid_ *this, float f_current, float f_setpoint) {
+update_pid(pid_ *this, float current, float setpoint) {
 	long dt = nSysTime-this->time;
-	float error = (f_setpoint-f_current)/dt;
-	float derivative = (dt==0) ? 0.0 : ((error-this->f_error)/dt);
+	float error = (setpoint-current)/dt;
+	float derivative = (dt==0) ? 0.0 : ((error-this->error)/dt);
 
-	this->i_motor_value = (this->f_error*this->k_p)+(this->f_integral*this->k_i)+(this->f_der*this->k_d);
+	this->motor_value = (this->error*this->kp)+(this->integral*this->ki)+(this->der*this->kd);
 
-	this->f_error = error;
+	this->error = error;
 	this->time = nSysTime;
 }
 
@@ -38,7 +38,7 @@ void
 wait_for(pid_ *this) {
 	while (true) {
 		delay(20);
-		if (abs(this->f_error) < 20) {
+		if (abs(this->error) < 20) {
 			return;
 		}
 	}
