@@ -16,6 +16,11 @@ typedef struct {
 } pid_;
 
 void
+pid_threshold(pid_ *this, int input) {
+	this->threshold = input;
+}
+
+void
 pid_init(pid_ *this, float p, float i, float d) {
 	this->kp = p;
 	this->ki = i;
@@ -38,7 +43,7 @@ void
 wait_for(pid_ *this) {
 	while (true) {
 		delay(20);
-		if (abs(this->error) < 20) {
+		if (abs(this->error) < this->threshold) {
 			return;
 		}
 	}
