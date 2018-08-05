@@ -24,21 +24,14 @@ pid_init(pid_ *this, float kp, float ki, float kd) {
 
 void
 update_pid(pid_ *this, float f_current, float f_setpoint) {
-	this->time = nSysTime;
-	long dt = nSysTime - this->time;
-	if (dt == 0) {
-		dt = 1;
-	}
-
-	float error = (f_setpoint - f_current) / dt;
-
-	this->f_integral = error * dt;
-
-	float derivative = (dt == 0) ? 0.0 : ((error - this->f_error) / dt);
+	long dt = nSysTime-this->time;
+	float error = (f_setpoint-f_current)/dt;
+	float derivative = (dt==0) ? 0.0 : ((error-this->f_error)/dt);
 
 	this->i_motor_value = (this->f_error*this->k_p)+(this->f_integral*this->k_i)+(this->f_der*this->k_d);
 
 	this->f_error = error;
+	this->time = nSysTime;
 }
 
 void
