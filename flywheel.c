@@ -36,7 +36,7 @@ flywheel() {
 	int predicted_power;
 	int flywheel_output;
 
-	float fkp = 0.2;
+	float fki = 0.2;
 	float fkd = 0.5;
 
 	while (true) {
@@ -90,7 +90,7 @@ flywheel() {
 			else if (control_state == PID) {
 				//flywheel_output = predicted_power + ((fkp*f_current_error)+(fkd*(f_last_error-f_current_error)));
 				//flywheel_output = predicted_power;
-				predicted_power += (fkp*f_current_error)+(fkd*(f_last_error-f_current_error));
+				predicted_power += (fki*f_current_error)+(fkd*(f_last_error-f_current_error));
 				flywheel_output = predicted_power;
 			}
 
