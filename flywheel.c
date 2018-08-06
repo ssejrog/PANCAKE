@@ -1,15 +1,12 @@
-#define HIGH_RPM 420
-#define LOW_RPM  250
-
 float velocity;
 task
 flywheel_rpm_task() {
-	int i_last_value, i_current_value;
+	int last_value, current_value;
 	while (true) {
-		i_last_value = abs(get_flywheel_sensor());
+		last_value = abs(get_flywheel_sensor());
 		delay(80);
-		i_current_value = abs(get_flywheel_sensor());
-		velocity = i_current_value - i_last_value;
+		current_value = abs(get_flywheel_sensor());
+		velocity = current_value - last_value;
 		SensorValue[flywheel_encoder] = 0;
 	}
 }
@@ -29,15 +26,15 @@ flywheel() {
 	bool BANG = true;
 	bool control_state;
 	int target_velocity;
-	float f_last_error;
-	float f_current_error;
-	bool b_flywheel = false;
+	float last_error;
+	float current_error;
+	bool flywheel_toggle = false;
 	int flywheel_count;
 	int predicted_power;
 	int flywheel_output;
 
-	float fki = 0.2;
-	float fkd = 0.5;
+	float ki = 0.2;
+	float kd = 0.5;
 
 	while (true) {
 
@@ -65,7 +62,7 @@ flywheel() {
 
 		/* TOGGLE FLYWHEEL */
 		if (vexRT[Btn7L]) {
-			b_flywheel = !b_flywheel;
+			flywheel_toggle = !flywheel_toggle;
 
 			while (vexRT[Btn7L]) {
 				delay(1);
@@ -73,9 +70,9 @@ flywheel() {
 		}
 
 		/* FLYWHEEL CONTROLLER */
-		if (b_flywheel) {
-			f_last_error = f_current_error;
-			f_current_error = target_velocity - velocity;
+		if (flywheel_toggle) {
+			last_error = current_error;
+			current_error = target_velocity - velocity;
 
 			if (velocity < (target_velocity - 25)) {
 				control_state = BANG;
@@ -88,9 +85,9 @@ flywheel() {
 				flywheel_output = 127;
 			}
 			else if (control_state == PID) {
-				//flywheel_output = predicted_power + ((fkp*f_current_error)+(fkd*(f_last_error-f_current_error)));
+				//flywheel_output = predicted_power + ((fkp*current_error)+(fkd*(last_error-current_error)));
 				//flywheel_output = predicted_power;
-				predicted_power += (fki*f_current_error)+(fkd*(f_last_error-f_current_error));
+				predicted_power += (ki*current_error)+(kd*(last_error-current_error));
 				flywheel_output = predicted_power;
 			}
 
