@@ -32,7 +32,8 @@ pre_auton() {
 	datalogClear();
 
 	pid_init(&arm_pid, 0.3, 0, 0);
-	pid_threshold(&arm_pid, 20);
+	pid_threshold(&arm_pid, 5);
+	pid_i_threshold(&arm_pid, 10);
 }
 
 task
