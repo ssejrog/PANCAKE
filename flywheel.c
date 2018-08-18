@@ -20,6 +20,7 @@ set_flywheel_off() {
 	set_flywheel(0);
 }
 
+bool flywheel_graph = false;
 task
 flywheel() {
 	bool PID = false;
@@ -92,14 +93,22 @@ flywheel() {
 			}
 
 			set_flywheel(flywheel_output >= 0 ? flywheel_output : 0);
-			//writeDebugStreamLine("Control State:%s \nPredicted Power:%i \nCurrent Power: %i \nCurrent Velocity:%i \nTarget Velocity:%i\n", control_state ? "BANG" : "PID", predicted_power, flywheel_output, velocity, target_velocity);
 
-
-			writeDebugStreamLine("%i, %i", velocity, motor[flywheel_1]);
-			datalogDataGroupStart();
-			datalogAddValue(0, target_velocity);
-			datalogAddValue(1, velocity);
-			datalogDataGroupEnd();
+			if (flywheel_graph) {
+				writeDebugStreamLine("%i, %i", velocity, motor[flywheel_1]);
+				datalogDataGroupStart();
+				datalogAddValue(0, target_velocity);
+				datalogAddValue(1, velocity);
+				datalogDataGroupEnd();
+			}
+			else {
+				writeDebugStreamLine("Control State:%s", control_state ? "BANG" : "PID");
+				writeDebugStreamLine("Predicted Power:%i", predicted_power);
+				writeDebugStreamLine("Current Power:%i", flywheel_output);
+				writeDebugStreamLine("Current Velocity:%i", velocity);
+				writeDebugStreamLine("Target Velocity:%i", target_velocity);
+				writeDebugStreamLine("\n");
+			}
 
 		}
 
@@ -108,5 +117,4 @@ flywheel() {
 		}
 		delay(20);
 	}
-	datalogDataGroupEnd();
 }

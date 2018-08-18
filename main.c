@@ -25,6 +25,8 @@
 
 void
 pre_auton() {
+	flywheel_graph = false; //Make true if you want to graph target vs current velocity
+
 	SensorValue[flywheel_encoder]    =
 	SensorValue[left_drive_encoder]  =
 	SensorValue[right_drive_encoder] = 0;
