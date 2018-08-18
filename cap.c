@@ -1,11 +1,15 @@
 task
 wrist() {
 	bool flip;
+	int i;
 	while (true) {
 		if (vexRT[Btn8U]) {
-			set_wrist(127*flip);
+			i = flip ? 1 : -1;
+
+			set_wrist(127*i);
 			delay(450);
-			set_wrist(15*flip);
+			set_wrist(15*i);
+
 			flip = !flip;
 
 			while (vexRT[Btn8U]) {
