@@ -79,7 +79,7 @@ task main()
 	clearLCDLine(1);
 	displayLCDPos(0, 0);
 	displayNextLCDString("Startup");
-	wait1Msec(2000);
+	wait1Msec(500);
 	clearLCDLine(0);
 
 	// Call pre_auton function where the user can initialize sensors and variables
