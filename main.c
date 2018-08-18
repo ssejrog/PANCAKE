@@ -31,7 +31,7 @@ pre_auton() {
 	clearDebugStream();
 	datalogClear();
 
-	pid_init(&arm_pid, 0.3, 0, 0);
+	pid_init(&arm_pid, 0.3, 0, 3);
 	pid_threshold(&arm_pid, 5);
 	pid_i_threshold(&arm_pid, 10);
 }

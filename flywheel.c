@@ -33,8 +33,8 @@ flywheel() {
 	int predicted_power;
 	int flywheel_output;
 
-	float ki = 0.2;
-	float kd = 0.5;
+	const float ki = 0.2;
+	const float kd = 0.5;
 
 	while (true) {
 
@@ -77,7 +77,7 @@ flywheel() {
 			if (velocity < (target_velocity - 25)) {
 				control_state = BANG;
 			}
-			else if (velocity > target_velocity - 2) {
+			else if (velocity > target_velocity - 25) {
 				control_state = PID;
 			}
 

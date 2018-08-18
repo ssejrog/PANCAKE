@@ -45,9 +45,8 @@ get_arm_sensor() {
 	return SensorValue[arm_sensor];
 }
 
-//PID FUNCTIONS
 task
-pid_hold() {
+arm_pid_task() {
 	while (true) {
 		update_pid(&arm_pid, get_arm_sensor(), arm_pid.des);
 

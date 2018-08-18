@@ -25,37 +25,79 @@ wrist() {
 	}
 }
 
+bool
+arm_down() {
+	if (get_arm_sensor() >= 2000) {
+		return true;
+	}
+	return false;
+}
+
+bool is_arm_pid;
 task
 lift() {
 	//bool b_lift;
 	//startTask(pid_hold);
 	while (true) {
-		//if (vexRT[Btn6U]) {
-		//	arm_pid.f_des = b_lift ? 2000 : 3000;
-		//	wait_for(&arm_pid);
-		//	b_lift = !b_lift;
-
-		//	while(vexRT[Btn6U]) {
-		//		delay(1);
-		//	}
-		//}
-
-		//set_lift(vexRT[Btn6U]?127:(vexRT[Btn6D]?-80:10));
+		//6U - Manual Up
+		//6D - Manual DOwn
+		//8R - Cap Post
+		//8D - Fielding
 
 		if (vexRT[Btn6U]) {
+			stopTask(arm_pid_task);
+			is_arm_pid = false;
 			set_lift(127);
 		}
+
 		else if (vexRT[Btn6D]) {
+			stopTask(arm_pid_task);
+			is_arm_pid = false;
 			set_lift(-80);
 		}
+
+		else if (vexRT[Btn8R]) {
+			startTask(arm_pid_task);
+			is_arm_pid = true;
+			arm_pid.des = 1800;
+		}
+
+		else if (vexRT[Btn8D]) {
+			startTask(arm_pid_task);
+			is_arm_pid = true;
+			arm_pid.des = 250;
+		}
+
 		else {
-			if (get_arm_sensor() >= 2000) {
-				set_lift(-10);
-			}
-			else {
-				set_lift(10);
+			if (is_arm_pid == false) {
+				if (arm_down()) {
+					set_lift(-10);
+				}
+				else {
+					set_lift(10);
+				}
 			}
 		}
+
+		//if (vexRT[Btn6U]) {
+		//	set_lift(127);
+		//}
+		//else if (vexRT[Btn6D]) {
+		//	if (arm_down()) {
+		//		set_lift(1);
+		//	}
+		//	else {
+		//		set_lift(-80);
+		//	}
+		//}
+		//else {
+		//	if (arm_down()) {
+		//		set_lift(-10);
+		//	}
+		//	else {
+		//		set_lift(10);
+		//	}
+		//}
 
 		delay(20);
 	}
