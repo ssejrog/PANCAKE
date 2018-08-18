@@ -1,25 +1,17 @@
 task
 wrist() {
-	bool b_flip;
+	bool flip;
 	while (true) {
 		if (vexRT[Btn8U]) {
-			if (b_flip) {
-				set_wrist(127);
-				delay(450);
-				set_wrist(15);
-			} else {
-				set_wrist(-127);
-				delay(450);
-				set_wrist(-15);
-			}
-
-			b_flip = !b_flip;
+			set_wrist(127*flip);
+			delay(450);
+			set_wrist(15*flip);
+			flip = !flip;
 
 			while (vexRT[Btn8U]) {
 				delay(1);
 			}
 		}
-
 
 		delay(20);
 	}
@@ -33,16 +25,14 @@ arm_down() {
 	return false;
 }
 
-bool is_arm_pid;
 task
 lift() {
-	//bool b_lift;
-	//startTask(pid_hold);
+	bool is_arm_pid;
 	while (true) {
 		//6U - Manual Up
-		//6D - Manual DOwn
+		//6D - Manual Down
 		//8R - Cap Post
-		//8D - Fielding
+		//8D - Fielding max height
 
 		if (vexRT[Btn6U]) {
 			stopTask(arm_pid_task);
@@ -78,26 +68,6 @@ lift() {
 				}
 			}
 		}
-
-		//if (vexRT[Btn6U]) {
-		//	set_lift(127);
-		//}
-		//else if (vexRT[Btn6D]) {
-		//	if (arm_down()) {
-		//		set_lift(1);
-		//	}
-		//	else {
-		//		set_lift(-80);
-		//	}
-		//}
-		//else {
-		//	if (arm_down()) {
-		//		set_lift(-10);
-		//	}
-		//	else {
-		//		set_lift(10);
-		//	}
-		//}
 
 		delay(20);
 	}
