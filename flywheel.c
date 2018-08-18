@@ -20,7 +20,7 @@ set_flywheel_off() {
 	set_flywheel(0);
 }
 
-bool flywheel_graph = false;
+bool flywheel_graph;
 task
 flywheel() {
 	bool PID = false;
