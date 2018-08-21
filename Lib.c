@@ -65,3 +65,13 @@ wait_for(pid_ *this) {
 		}
 	}
 }
+
+void
+wait_for(pid_ *this, pid_ *that) {
+	while (true) {
+		delay(20);
+		if (abs(this->error) < this->threshold && abs(that->error) < that->threshold) {
+			return;
+		}
+	}
+}
