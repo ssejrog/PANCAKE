@@ -22,6 +22,8 @@
 #include "motor.h"
 #include "cap.c"
 #include "flywheel.c"
+#include "DriveFunctions.c"
+#include "Auton.c"
 
 void
 pre_auton() {
