@@ -28,11 +28,18 @@ void
 pre_auton() {
 	flywheel_graph = false; //Make true if you want to graph target vs current velocity
 
-	SensorValue[flywheel_encoder]    =
-	SensorValue[left_drive_encoder]  =
-	SensorValue[right_drive_encoder] = 0;
+	clear_encoder();
+
 	clearDebugStream();
 	datalogClear();
+
+	pid_init(&l_drive, 0.1, 0, 0);
+	pid_threshold(&l_drive, 100);
+	pid_i_threshold(&l_drive, 10);
+
+	pid_init(&r_drive, 0.1, 0, 0);
+	pid_threshold(&r_drive, 100);
+	pid_i_threshold(&r_drive, 10);
 
 	pid_init(&arm_pid, 0.3, 0, 3);
 	pid_threshold(&arm_pid, 5);
@@ -41,6 +48,19 @@ pre_auton() {
 
 task
 autonomous() {
+	clear_encoder();
+	startTask(drive_pid_task);
+	startTask(arm_pid_task);
+	startTask(flywheel);
+	startTask(flywheel_rpm_task);
+	arm_pid.des = get_arm_sensor();
+
+	test_auton();
+
+	stopTask(drive_pid_task);
+	stopTask(arm_pid_task);
+	allMotorsOff();
+	stopTask(flywheel);
 }
 
 task
@@ -51,6 +71,22 @@ usercontrol() {
 	startTask(flywheel_rpm_task);
 	startTask(drive_control);
 	while (true) {
+
+		if (vexRT[Btn7D]) {
+			mid_flag();
+		}
+		if (vexRT[Btn7U]) {
+			high_flag();
+		}
+
+		/* TOGGLE FLYWHEEL */
+		if (vexRT[Btn7L]) {
+			flywheel_toggle = !flywheel_toggle;
+
+			while (vexRT[Btn7L]) {
+				delay(1);
+			}
+		}
 
 		set_ball_intake((vexRT[Btn5U]-vexRT[Btn5D])*127);
 

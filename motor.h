@@ -56,3 +56,10 @@ int
 get_r_drive_sensor() {
 	return -SensorValue[right_drive_encoder];
 }
+
+void
+clear_encoder() {
+	SensorValue[flywheel_encoder] =
+	SensorValue[left_drive_encoder] =
+	SensorValue[right_drive_encoder] = 0;
+}

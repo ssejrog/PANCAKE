@@ -20,55 +20,35 @@ set_flywheel_off() {
 	set_flywheel(0);
 }
 
+int target_velocity;
+int predicted_power;
+void
+high_flag() {
+	target_velocity = 420;
+	predicted_power = 90;
+}
+
+void
+mid_flag() {
+	target_velocity = 250;
+	predicted_power = 30;
+}
+
 bool flywheel_graph;
+bool flywheel_toggle = false;
 task
 flywheel() {
 	bool PID = false;
 	bool BANG = true;
 	bool control_state;
-	int target_velocity;
 	float last_error;
 	float current_error;
-	bool flywheel_toggle = false;
-	int flywheel_count;
-	int predicted_power;
 	int flywheel_output;
 
 	const float ki = 0.2;
 	const float kd = 0.5;
 
 	while (true) {
-
-		if (vexRT[Btn7D]) {
-			flywheel_count = 1;
-		}
-		if (vexRT[Btn7U]) {
-			flywheel_count = 2;
-		}
-
-		switch(flywheel_count) {
-			case 1:
-				target_velocity = 250;
-				predicted_power = 30;
-				break;
-
-			case 2:
-				target_velocity = 420;
-				predicted_power = 90;
-				break;
-
-			default:
-				break;
-		}
-
-		/* TOGGLE FLYWHEEL */
-		if (vexRT[Btn7L]) {
-			flywheel_toggle = !flywheel_toggle;
-
-			while (vexRT[Btn7L]) {
-				delay(1);
-			}
-		}
 
 		/* FLYWHEEL CONTROLLER */
 		if (flywheel_toggle) {
