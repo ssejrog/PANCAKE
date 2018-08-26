@@ -2,6 +2,8 @@
 
 //PID
 pid_ arm_pid;
+pid_ l_drive;
+pid_ r_drive;
 
 //MOTOR SET
 void
@@ -45,11 +47,12 @@ get_arm_sensor() {
 	return SensorValue[arm_sensor];
 }
 
-task
-arm_pid_task() {
-	while (true) {
-		update_pid(&arm_pid, get_arm_sensor(), arm_pid.des);
+int
+get_l_drive_sensor() {
+	return -SensorValue[left_drive_encoder];
+}
 
-		set_lift(-arm_pid.motor_value);
-	}
+int
+get_r_drive_sensor() {
+	return -SensorValue[right_drive_encoder];
 }
