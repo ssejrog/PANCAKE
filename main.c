@@ -41,9 +41,9 @@ pre_auton() {
 	pid_threshold(&r_drive, 100);
 	pid_i_threshold(&r_drive, 10);
 
-	pid_init(&arm_pid, 0.3, 0, 3);
-	pid_threshold(&arm_pid, 5);
-	pid_i_threshold(&arm_pid, 10);
+	pid_init(&arm_pid, 0.175, 0.0003, 16);
+	pid_threshold(&arm_pid, 10);
+	pid_i_threshold(&arm_pid, 200);
 }
 
 task
@@ -65,13 +65,13 @@ autonomous() {
 
 task
 usercontrol() {
+	clear_encoder();
 	startTask(wrist);
 	startTask(lift);
 	startTask(flywheel);
 	startTask(flywheel_rpm_task);
 	startTask(drive_control);
 	while (true) {
-
 		if (vexRT[Btn7D]) {
 			mid_flag();
 		}
@@ -79,7 +79,6 @@ usercontrol() {
 			high_flag();
 		}
 
-		/* TOGGLE FLYWHEEL */
 		if (vexRT[Btn7L]) {
 			flywheel_toggle = !flywheel_toggle;
 

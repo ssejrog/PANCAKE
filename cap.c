@@ -1,4 +1,19 @@
 task
+arm_pid_task() {
+	while (true) {
+		update_pid(&arm_pid, get_arm_sensor(), arm_pid.des);
+
+		if (-arm_pid.motor_value <= -60) {
+			arm_pid.motor_value = 60;
+		}
+
+		set_lift(-arm_pid.motor_value);
+
+		delay(20);
+	}
+}
+
+task
 wrist() {
 	bool flip;
 	int i;
@@ -59,7 +74,7 @@ lift() {
 		else if (vexRT[Btn8D]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
-			arm_pid.des = 250;
+			arm_pid.des = 300;
 		}
 
 		else {
@@ -76,3 +91,9 @@ lift() {
 		delay(20);
 	}
 }
+
+//Ben -
+//Vann -
+//Angelo -
+//Michael - mikeboy123
+//Tristen

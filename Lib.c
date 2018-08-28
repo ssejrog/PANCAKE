@@ -40,7 +40,7 @@ void
 update_pid(pid_ *this, float current, float setpoint) {
 	long dt = nSysTime-this->time;
 	float error = setpoint-current;
-	float derivative = (dt==0) ? 0.0 : (error-this->error)/dt;
+	this->der = (dt==0) ? 0.0 : (error-this->error)/dt;
 
 	if (abs(error) > this->i_threshold) {
 		this->integral = 0;
