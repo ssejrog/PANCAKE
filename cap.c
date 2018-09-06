@@ -91,9 +91,3 @@ lift() {
 		delay(20);
 	}
 }
-
-//Ben -
-//Vann -
-//Angelo -
-//Michael - mikeboy123
-//Tristen

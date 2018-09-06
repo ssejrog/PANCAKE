@@ -12,17 +12,17 @@ drive_pid_task() {
 task
 drive_control() {
 	//Motor Output
-	int l_output;
-	int r_output;
+	int l_output = 0;
+	int r_output = 0;
 
 	//Joystick Variables
-	int l;
-	int r;
+	int l = 0;
+	int r = 0;
 	int threshold = 10;
 
 	//PID Variables
-	int l_target;
-	int r_target;
+	int l_target = 0;
+	int r_target = 0;
 	float kp = 0.08;
 
 	while (true) {

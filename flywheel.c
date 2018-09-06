@@ -25,7 +25,7 @@ int predicted_power;
 void
 high_flag() {
 	target_velocity = 420;
-	predicted_power = 90;
+	predicted_power = 100;
 }
 
 void
@@ -45,7 +45,7 @@ flywheel() {
 	float current_error;
 	int flywheel_output;
 
-	const float ki = 0.2;
+	const float ki = 0.04;
 	const float kd = 0.5;
 
 	while (true) {
@@ -55,10 +55,10 @@ flywheel() {
 			last_error = current_error;
 			current_error = target_velocity - velocity;
 
-			if (velocity < (target_velocity - 25)) {
+			if (velocity < (target_velocity - 5)) {
 				control_state = BANG;
 			}
-			else if (velocity > target_velocity - 25) {
+			else if (velocity > (target_velocity - 5)) {
 				control_state = PID;
 			}
 

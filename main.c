@@ -33,13 +33,13 @@ pre_auton() {
 	clearDebugStream();
 	datalogClear();
 
-	pid_init(&l_drive, 0.1, 0, 0);
+	pid_init(&l_drive, 0.1, 0.0001, 15);
 	pid_threshold(&l_drive, 100);
-	pid_i_threshold(&l_drive, 10);
+	pid_i_threshold(&l_drive, 1000);
 
-	pid_init(&r_drive, 0.1, 0, 0);
+	pid_init(&r_drive, 0.1, 0.0001, 15);
 	pid_threshold(&r_drive, 100);
-	pid_i_threshold(&r_drive, 10);
+	pid_i_threshold(&r_drive, 1000);
 
 	pid_init(&arm_pid, 0.175, 0.0003, 16);
 	pid_threshold(&arm_pid, 10);
@@ -55,7 +55,8 @@ autonomous() {
 	startTask(flywheel_rpm_task);
 	arm_pid.des = get_arm_sensor();
 
-	test_auton();
+	//lcd code will go here at some point
+	front_flag_auton();
 
 	stopTask(drive_pid_task);
 	stopTask(arm_pid_task);
@@ -92,3 +93,9 @@ usercontrol() {
 		delay(20);
 	}
 }
+
+//Ben -
+//Vann - YvngDaggerStick
+//Angelo -
+//Michael - mikeboy123
+//Tristen
