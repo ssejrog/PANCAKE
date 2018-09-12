@@ -1,5 +1,20 @@
 #pragma systemFile
 
+#define clipNum(iInput, iLimit) iInput <= -iLimit ? -iLimit : (iInput >= iLimit ? iLimit : iInput)
+
+void
+clear_lcd_lines() {
+	clearLCDLine(0);
+	clearLCDLine(1);
+}
+
+void
+wait_for_release() {
+	while (nLCDButtons != 0) {
+		delay(1);
+	}
+}
+
 //All variables that are used during PID
 typedef struct {
 	float kp;

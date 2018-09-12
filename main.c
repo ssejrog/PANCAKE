@@ -24,6 +24,10 @@
 #include "DriveFunctions.c"
 #include "Auton.c"
 
+const int kMaxNumberOfPages = 5;
+const int kMinNumberOfPages = 1;
+int iAuton = 1;
+string rgSAuton[kMaxNumberOfPages] = {"RED FLAG", "RED CAP", "BLUE FLAG", "BLUE CAP", "NONE"};
 void
 pre_auton() {
 	flywheel_graph = false; //Make true if you want to graph target vs current velocity
@@ -44,6 +48,26 @@ pre_auton() {
 	pid_init(&arm_pid, 0.175, 0.0003, 16);
 	pid_threshold(&arm_pid, 10);
 	pid_i_threshold(&arm_pid, 200);
+
+	while(!bIfiAutonomousMode && bIfiRobotDisabled) {
+		if(nLCDButtons == 1) {
+			iAuton = iAuton == kMinNumberOfPages ? kMaxNumberOfPages : iAuton - 1;
+			wait_for_release();
+		}
+		if(nLCDButtons == 4) {
+			iAuton = iAuton == kMaxNumberOfPages ? kMinNumberOfPages : iAuton + 1;
+			wait_for_release();
+		}
+		if(nLCDButtons == 2) {
+			wait_for_release();
+			break;
+		}
+
+		displayLCDCenteredString(0, rgSAuton[iAuton - 1]);
+		displayLCDCenteredString( 1, "<    Select    >");
+		delay(50);
+		clear_lcd_lines();
+	}
 }
 
 task
@@ -57,6 +81,7 @@ autonomous() {
 
 	//lcd code will go here at some point
 	front_flag_auton();
+	//front_flag_auton_2();
 
 	stopTask(drive_pid_task);
 	stopTask(arm_pid_task);

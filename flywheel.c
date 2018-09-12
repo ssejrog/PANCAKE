@@ -66,8 +66,6 @@ flywheel() {
 				flywheel_output = 127;
 			}
 			else if (control_state == PID) {
-				//flywheel_output = predicted_power + ((fkp*current_error)+(fkd*(last_error-current_error)));
-				//flywheel_output = predicted_power;
 				predicted_power += (ki*current_error)+(kd*(last_error-current_error));
 				flywheel_output = predicted_power;
 			}

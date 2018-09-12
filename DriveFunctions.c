@@ -1,10 +1,11 @@
+int drive_pid_lim = 127;
 task
 drive_pid_task() {
 	while (true) {
 		update_pid(&l_drive, get_l_drive_sensor(), l_drive.des);
 		update_pid(&r_drive, get_r_drive_sensor(), r_drive.des);
 
-		set_tank(l_drive.motor_value, r_drive.motor_value);
+		set_tank(clipNum(l_drive.motor_value, drive_pid_lim), clipNum(r_drive.motor_value, drive_pid_lim));
 		delay(20);
 	}
 }
