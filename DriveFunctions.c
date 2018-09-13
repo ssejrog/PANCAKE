@@ -54,8 +54,14 @@ drive_control() {
 	}
 }
 
+bool bFlip = false;
 void
 auton_drive(int l_input, int r_input) {
-	l_drive.des = l_input;
-	r_drive.des = r_input;
+	if (!bFlip) {
+		l_drive.des = l_input;
+		r_drive.des = r_input;
+	} else {
+		l_drive.des = r_input;
+		r_drive.des = l_input;
+	}
 }

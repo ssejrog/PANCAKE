@@ -68,7 +68,7 @@ lift() {
 		else if (vexRT[Btn8R]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
-			arm_pid.des = 1800;
+			arm_pid.des = 1100;
 		}
 
 		else if (vexRT[Btn8D]) {

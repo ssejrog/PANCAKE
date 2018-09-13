@@ -32,11 +32,12 @@ void
 pre_auton() {
 	flywheel_graph = false; //Make true if you want to graph target vs current velocity
 
+	//Clearing some stuffz
 	clear_encoder();
-
 	clearDebugStream();
 	datalogClear();
 
+	//Drive PID Initialization
 	pid_init(&l_drive, 0.1, 0.0001, 15);
 	pid_threshold(&l_drive, 100);
 	pid_i_threshold(&l_drive, 1000);
@@ -45,10 +46,13 @@ pre_auton() {
 	pid_threshold(&r_drive, 100);
 	pid_i_threshold(&r_drive, 1000);
 
+	//Arm PID Initialization
 	pid_init(&arm_pid, 0.175, 0.0003, 16);
 	pid_threshold(&arm_pid, 10);
 	pid_i_threshold(&arm_pid, 200);
 
+	//LCD Code, will only run when competition control is in DISABLED mode
+	bLCDBacklight = true;
 	while(!bIfiAutonomousMode && bIfiRobotDisabled) {
 		if(nLCDButtons == 1) {
 			iAuton = iAuton == kMinNumberOfPages ? kMaxNumberOfPages : iAuton - 1;
@@ -68,8 +72,10 @@ pre_auton() {
 		delay(50);
 		clear_lcd_lines();
 	}
+	bLCDBacklight = false;
 }
 
+//string rgSAuton[kMaxNumberOfPages] = {"RED FLAG", "RED CAP", "BLUE FLAG", "BLUE CAP", "NONE"};
 task
 autonomous() {
 	clear_encoder();
@@ -80,13 +86,41 @@ autonomous() {
 	arm_pid.des = get_arm_sensor();
 
 	//lcd code will go here at some point
-	front_flag_auton();
-	//front_flag_auton_2();
+	switch (iAuton) {
+		//RED FLAG
+		case 1:
+			bFlip = false;
+			intake_ball_auton();
+			flag_auton();
+			break;
+		//RED CAP
+		case 2:
+			bFlip = false;
+			intake_ball_auton();
+			break;
+		//BLUE FLAG
+		case 3:
+			bFlip = true;
+			intake_ball_auton();
+			flag_auton();
+			break;
+		//BLUE CAP
+		case 4:
+			bFlip = true;
+			intake_ball_auton();
+			break;
+		//NONE
+		case 5:
+			break;
+		//DEFAULT
+		default:
+			break;
+	}
 
 	stopTask(drive_pid_task);
 	stopTask(arm_pid_task);
-	allMotorsOff();
 	stopTask(flywheel);
+	allMotorsOff();
 }
 
 task
@@ -118,9 +152,3 @@ usercontrol() {
 		delay(20);
 	}
 }
-
-//Ben -
-//Vann - YvngDaggerStick
-//Angelo -
-//Michael - mikeboy123
-//Tristen

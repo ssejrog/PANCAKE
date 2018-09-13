@@ -91,7 +91,9 @@ flywheel() {
 		}
 
 		else {
-			set_flywheel_off();
+			if (motor[flywheel_1] > 0) {
+				set_flywheel_off();
+			}
 		}
 		delay(20);
 	}
