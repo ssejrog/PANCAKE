@@ -10,6 +10,7 @@ drive_pid_task() {
 	}
 }
 
+//Active Brake and Manual Control
 task
 drive_control() {
 	//Motor Output
@@ -54,7 +55,9 @@ drive_control() {
 	}
 }
 
+//"bFlip" sets the left parameter to the right, making the robot turn the opposite direction
 bool bFlip = false;
+//Void for making it easier to set drive target values
 void
 auton_drive(int l_input, int r_input) {
 	if (!bFlip) {

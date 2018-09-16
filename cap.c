@@ -1,3 +1,4 @@
+//Update Arm PID
 task
 arm_pid_task() {
 	while (true) {
@@ -13,6 +14,7 @@ arm_pid_task() {
 	}
 }
 
+//Manual toggle for wirst
 task
 wrist() {
 	bool flip;
@@ -36,6 +38,7 @@ wrist() {
 	}
 }
 
+//Returns true if arm is down
 bool
 arm_down() {
 	if (get_arm_sensor() >= 2000) {
@@ -44,6 +47,7 @@ arm_down() {
 	return false;
 }
 
+//Lift Task
 task
 lift() {
 	bool is_arm_pid;
@@ -51,32 +55,38 @@ lift() {
 		//6U - Manual Up
 		//6D - Manual Down
 		//8R - Cap Post
-		//8D - Fielding max height
+		//8D - Descore Height
 
+		//Manual Up
 		if (vexRT[Btn6U]) {
 			stopTask(arm_pid_task);
 			is_arm_pid = false;
 			set_lift(127);
 		}
 
+		//Manual Down
 		else if (vexRT[Btn6D]) {
 			stopTask(arm_pid_task);
 			is_arm_pid = false;
 			set_lift(-80);
 		}
 
+		//Cap Post
 		else if (vexRT[Btn8R]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
 			arm_pid.des = 1100;
 		}
 
+		//Descore Height
 		else if (vexRT[Btn8D]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
 			arm_pid.des = 300;
 		}
 
+		//If PID was the last thing run, run PID at last position
+		//If Manual was last thing run, hold +-10 power
 		else {
 			if (is_arm_pid == false) {
 				if (arm_down()) {

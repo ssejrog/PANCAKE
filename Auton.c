@@ -1,17 +1,3 @@
-//void
-//test_auton() {
-//	flywheel_toggle = true;
-//	high_flag();
-
-//	auton_drive(1000, 1000);
-//	wait_for(&l_drive, &r_drive);
-
-//	delay(2000);
-
-//	arm_pid.des = 1800;
-//	wait_for(&arm_pid);
-//}
-
 //Intake Ball under Cap
 void
 intake_ball_auton() {
@@ -42,35 +28,10 @@ intake_ball_auton() {
 	delay(350);
 }
 
+//Ideally, intake ball under cap and score all 3 flags
 void
 flag_auton() {
-	/*
-	flywheel_toggle = true;
-	high_flag();
-
-	//Drive Forward to ball
-	drive_pid_lim = 50;
-	auton_drive(5250,  5250);
-	wait_for(&l_drive, &r_drive);
-	stopTask(drive_pid_task);
-	drive_pid_lim = 70;
-
-	//Intake ball
-	set_tank(20, 20);
-	set_ball_intake(127);
-	delay(1000);
-	set_tank(00, 00);
-	//delay(250);
-	set_ball_intake(0);
-	set_tank(0, 0);
-	//850
-
-	//Drive Back
-	auton_drive(-400, -400);
-	startTask(drive_pid_task);
-	wait_for(&l_drive, &r_drive);
-	delay(350);
-	*/
+	intake_ball_auton();
 
 	//Turn
 	drive_pid_lim = 127;
@@ -104,8 +65,9 @@ flag_auton() {
 
 	//Turn
 	drive_pid_lim = 127;
-	auton_drive(3000,7300);
-	wait_for(&l_drive, &r_drive);
+	auton_drive(4000,7300);
+	//wait_for(&l_drive, &r_drive);
+	delay(1000);
 	drive_pid_lim = 70;
 
 	//hit bottom flag

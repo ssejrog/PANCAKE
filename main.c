@@ -24,10 +24,11 @@
 #include "DriveFunctions.c"
 #include "Auton.c"
 
+//Pre Auton and LCD Control
 const int kMaxNumberOfPages = 5;
 const int kMinNumberOfPages = 1;
 int iAuton = 1;
-string rgSAuton[kMaxNumberOfPages] = {"RED FLAG", "RED CAP", "BLUE FLAG", "BLUE CAP", "NONE"};
+string rgSAuton[kMaxNumberOfPages] = {"RED CAP", "RED FLAG", "BLUE CAP", "BLUE FLAG", "NONE"};
 void
 pre_auton() {
 	flywheel_graph = false; //Make true if you want to graph target vs current velocity
@@ -75,7 +76,7 @@ pre_auton() {
 	bLCDBacklight = false;
 }
 
-//string rgSAuton[kMaxNumberOfPages] = {"RED FLAG", "RED CAP", "BLUE FLAG", "BLUE CAP", "NONE"};
+//Auton
 task
 autonomous() {
 	clear_encoder();
@@ -85,29 +86,27 @@ autonomous() {
 	startTask(flywheel_rpm_task);
 	arm_pid.des = get_arm_sensor();
 
-	//lcd code will go here at some point
+	//Run auton based off of LCD selection
 	switch (iAuton) {
 		//RED FLAG
 		case 1:
 			bFlip = false;
 			intake_ball_auton();
-			flag_auton();
 			break;
 		//RED CAP
 		case 2:
 			bFlip = false;
-			intake_ball_auton();
+			flag_auton();
 			break;
 		//BLUE FLAG
 		case 3:
 			bFlip = true;
 			intake_ball_auton();
-			flag_auton();
 			break;
 		//BLUE CAP
 		case 4:
 			bFlip = true;
-			intake_ball_auton();
+			flag_auton();
 			break;
 		//NONE
 		case 5:
@@ -123,6 +122,7 @@ autonomous() {
 	allMotorsOff();
 }
 
+//User Control
 task
 usercontrol() {
 	clear_encoder();
@@ -132,6 +132,7 @@ usercontrol() {
 	startTask(flywheel_rpm_task);
 	startTask(drive_control);
 	while (true) {
+		//Flywheel speeds
 		if (vexRT[Btn7D]) {
 			mid_flag();
 		}
@@ -139,14 +140,15 @@ usercontrol() {
 			high_flag();
 		}
 
+		//Toggle flywheel on/off
 		if (vexRT[Btn7L]) {
 			flywheel_toggle = !flywheel_toggle;
-
 			while (vexRT[Btn7L]) {
 				delay(1);
 			}
 		}
 
+		//Run ball intake
 		set_ball_intake((vexRT[Btn5U]-vexRT[Btn5D])*127);
 
 		delay(20);

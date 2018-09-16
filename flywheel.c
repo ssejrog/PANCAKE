@@ -1,3 +1,4 @@
+//Calculate flywheel velocity per 80ms
 float velocity;
 task
 flywheel_rpm_task() {
@@ -11,6 +12,7 @@ flywheel_rpm_task() {
 	}
 }
 
+//Ramp the flywheel down when during it off
 void
 set_flywheel_off() {
 	for (int i = motor[flywheel_1]; i > 0; i--) {
@@ -20,6 +22,7 @@ set_flywheel_off() {
 	set_flywheel(0);
 }
 
+//Set flywheel speeds
 int target_velocity;
 int predicted_power;
 void
@@ -34,6 +37,7 @@ mid_flag() {
 	predicted_power = 30;
 }
 
+//Flywheel logic
 bool flywheel_graph;
 bool flywheel_toggle = false;
 task
@@ -50,11 +54,12 @@ flywheel() {
 
 	while (true) {
 
-		/* FLYWHEEL CONTROLLER */
+		//Flywheel Controller
 		if (flywheel_toggle) {
 			last_error = current_error;
 			current_error = target_velocity - velocity;
 
+			//Fliping Control States between BANG and PID
 			if (velocity < (target_velocity - 5)) {
 				control_state = BANG;
 			}
@@ -62,9 +67,11 @@ flywheel() {
 				control_state = PID;
 			}
 
+			//Run 127 power if Bang
 			if (control_state == BANG) {
 				flywheel_output = 127;
 			}
+			//Run ID loop if PID
 			else if (control_state == PID) {
 				predicted_power += (ki*current_error)+(kd*(last_error-current_error));
 				flywheel_output = predicted_power;
@@ -72,6 +79,7 @@ flywheel() {
 
 			set_flywheel(flywheel_output >= 0 ? flywheel_output : 0);
 
+			//Graph flywheel velocity
 			if (flywheel_graph) {
 				writeDebugStreamLine("%i, %i", velocity, motor[flywheel_1]);
 				datalogDataGroupStart();
@@ -79,6 +87,7 @@ flywheel() {
 				datalogAddValue(1, velocity);
 				datalogDataGroupEnd();
 			}
+			//Output debugger window
 			else {
 				writeDebugStreamLine("Control State:%s", control_state ? "BANG" : "PID");
 				writeDebugStreamLine("Predicted Power:%i", predicted_power);

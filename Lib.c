@@ -1,13 +1,16 @@
 #pragma systemFile
 
+//Limits the input
 #define clipNum(iInput, iLimit) iInput <= -iLimit ? -iLimit : (iInput >= iLimit ? iLimit : iInput)
 
+//Clear LCD Lines
 void
 clear_lcd_lines() {
 	clearLCDLine(0);
 	clearLCDLine(1);
 }
 
+//Wait for LCD button to be released
 void
 wait_for_release() {
 	while (nLCDButtons != 0) {
@@ -81,6 +84,7 @@ wait_for(pid_ *this) {
 	}
 }
 
+//Hold the current function until the target position is reached for both inputs
 void
 wait_for(pid_ *this, pid_ *that) {
 	while (true) {
