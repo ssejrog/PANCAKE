@@ -1,3 +1,8 @@
+///////
+// OLD BOI AUTONS
+///////
+
+/*
 //Intake Ball under Cap
 void
 intake_ball_auton() {
@@ -73,4 +78,47 @@ flag_auton() {
 	//hit bottom flag
 	auton_drive(5000, 9300);
 	wait_for(&l_drive, &r_drive);
+}
+*/
+
+//Intake ball under cap
+void
+intake_ball_auton() {
+	//Turn intake on
+
+	//Go forward about 90% of the way
+	//wait_for(&l_drive, &r_drive);
+
+	//Limit drive to half power
+	//Drive forward a bit more and intake ball
+
+	//Drive back to 0, 0
+	//wait_for(&l_drive, &r_drive);
+}
+
+void
+flag_auton() {
+	intake_ball_auton();
+
+	//Turn
+	//wait_for(&l_drive, &r_drive);
+
+	//Go forward and shoot high flag
+	//wait_for(&l_drive, &r_drive);
+
+	//Shoot ball
+	//indexer();
+
+	//Go forward and shoot middle flag
+	//wait_for(&l_drive, &r_drive);
+
+	//Shoot ball
+	//indexer();
+
+	//Turn
+	//wait_for(&l_drive, &r_drive);
+
+	//Go forward and hit bottom flag
+	//wait_for(&l_drive, &r_drive);
+
 }

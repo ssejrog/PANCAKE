@@ -111,6 +111,18 @@ flywheel() {
 	}
 }
 
+void
+indexer() {
+	arm_pid.des = 950;
+	delay(250);
+
+	set_ball_intake(127);
+	delay(150);
+	set_ball_intake(0);
+
+	arm_pid.des = 600;
+}
+
 task
 ball_intake_task() {
 	while (true) {
@@ -121,18 +133,9 @@ ball_intake_task() {
 			stopTask(lift);
 			startTask(arm_pid_task);
 			is_arm_pid = true;
-			arm_pid.des = 950;
-			delay(250);
 
-			set_ball_intake(127);
-			delay(150);
-			set_ball_intake(0);
+			indexer();
 
-			arm_pid.des = 600;
-			//wait_for(&arm_pid);
-			//wait until indexer opens
-			//run intake for X amount of time
-			//close indexer
 			startTask(lift);
 		}
 		else if (vexRT[Btn7D]) {
