@@ -25,7 +25,7 @@ drive_control() {
 	//PID Variables
 	int l_target = 0;
 	int r_target = 0;
-	float kp = 0.08;
+	float kp = 0.1;
 
 	while (true) {
 		//Thresholds for joysticks

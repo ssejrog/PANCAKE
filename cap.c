@@ -8,7 +8,7 @@ arm_pid_task() {
 			arm_pid.motor_value = 60;
 		}
 
-		set_lift(-arm_pid.motor_value);
+		set_lift(arm_pid.motor_value);
 
 		delay(20);
 	}
@@ -41,16 +41,16 @@ wrist() {
 //Returns true if arm is down
 bool
 arm_down() {
-	if (get_arm_sensor() >= 2000) {
+	if (get_arm_sensor() <= 750) {
 		return true;
 	}
 	return false;
 }
 
 //Lift Task
+bool is_arm_pid;
 task
 lift() {
-	bool is_arm_pid;
 	while (true) {
 		//6U - Manual Up
 		//6D - Manual Down
@@ -75,14 +75,14 @@ lift() {
 		else if (vexRT[Btn8R]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
-			arm_pid.des = 1100;
+			arm_pid.des = 1000;
 		}
 
 		//Descore Height
 		else if (vexRT[Btn8D]) {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
-			arm_pid.des = 300;
+			arm_pid.des = 2000;
 		}
 
 		//If PID was the last thing run, run PID at last position

@@ -57,7 +57,7 @@ get_arm_sensor() {
 //Get Left Drive Sensor
 int
 get_l_drive_sensor() {
-	return -SensorValue[left_drive_encoder];
+	return SensorValue[left_drive_encoder];
 }
 
 //Get Right Drive Sensor

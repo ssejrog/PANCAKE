@@ -31,11 +31,11 @@ high_flag() {
 	predicted_power = 100;
 }
 
-void
-mid_flag() {
-	target_velocity = 250;
-	predicted_power = 30;
-}
+//void
+//mid_flag() {
+//	target_velocity = 250;
+//	predicted_power = 30;
+//}
 
 //Flywheel logic
 bool flywheel_graph;
@@ -51,6 +51,9 @@ flywheel() {
 
 	const float ki = 0.04;
 	const float kd = 0.5;
+
+	//Default the speed to high flag (because this is the main speed)
+	high_flag();
 
 	while (true) {
 
@@ -105,5 +108,38 @@ flywheel() {
 			}
 		}
 		delay(20);
+	}
+}
+
+task
+ball_intake_task() {
+	while (true) {
+		if (vexRT[Btn5D]) {
+			set_ball_intake(127);
+		}
+		else if (vexRT[Btn5U]) {
+			stopTask(lift);
+			startTask(arm_pid_task);
+			is_arm_pid = true;
+			arm_pid.des = 950;
+			delay(250);
+
+			set_ball_intake(127);
+			delay(150);
+			set_ball_intake(0);
+
+			arm_pid.des = 600;
+			//wait_for(&arm_pid);
+			//wait until indexer opens
+			//run intake for X amount of time
+			//close indexer
+			startTask(lift);
+		}
+		else if (vexRT[Btn7D]) {
+			set_ball_intake(-127);
+		}
+		else {
+			set_ball_intake(0);
+		}
 	}
 }
