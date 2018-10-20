@@ -84,16 +84,79 @@ flag_auton() {
 //Intake ball under cap
 void
 intake_ball_auton() {
+	//Turn flywheel on
+	flywheel_toggle = true;
+	high_flag();
+	drive_constants();
+
 	//Turn intake on
+	set_ball_intake(127);
 
 	//Go forward about 90% of the way
-	//wait_for(&l_drive, &r_drive);
+	auton_drive(1100, 1100);
+	wait_for(&l_drive, &r_drive);
 
 	//Limit drive to half power
+	drive_pid_lim = 50;
+	delay(250);
+
 	//Drive forward a bit more and intake ball
+	auton_drive(1600, 1600);
+	wait_for(&l_drive, &r_drive);
+
+	//Limit drive to full speed
+	drive_pid_lim = 127;
 
 	//Drive back to 0, 0
-	//wait_for(&l_drive, &r_drive);
+	auton_drive(0, 0);
+	wait_for(&l_drive, &r_drive);
+	set_ball_intake(0);
+	delay(250);
+
+	//Turn to face flag
+	turn_constants();
+	auton_drive(-385, 385);
+	wait_for(&l_drive, &r_drive);
+	delay(1500);
+
+	//Go to shooting position
+	drive_constants();
+	//auton_drive(65, 835);
+	auton_drive(0, 805);
+	wait_for(&l_drive, &r_drive);
+	delay(400);
+
+	//SHOOT!
+	indexer();
+	delay(500);
+
+	//Go to shooting position
+	//auton_drive(750, 1605);
+	//auton_drive(750, 1555);
+	//auton_drive(725, 1530);
+	//auton_drive(700, 1505);
+	auton_drive(680, 1505);
+	set_ball_intake(127);
+	wait_for(&l_drive, &r_drive);
+	delay(400);
+	set_ball_intake(0);
+
+	//SHOOT!
+	indexer();
+	delay(500);
+
+
+	//Turn to hit bottom flag
+	turn_constants();
+	auton_drive(680, 1670);
+	wait_for(&l_drive, &r_drive);
+	delay(500);
+
+	//Hit bottom flag
+	drive_constants();
+	auton_drive(1300, 2250);
+	wait_for(&l_drive, &r_drive);
+	delay(200);
 }
 
 void

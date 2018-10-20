@@ -31,12 +31,6 @@ high_flag() {
 	predicted_power = 100;
 }
 
-//void
-//mid_flag() {
-//	target_velocity = 250;
-//	predicted_power = 30;
-//}
-
 //Flywheel logic
 bool flywheel_graph;
 bool flywheel_toggle = false;
@@ -113,14 +107,14 @@ flywheel() {
 
 void
 indexer() {
-	arm_pid.des = 950;
+	arm_pid.des = INDEXER;
 	delay(250);
 
 	set_ball_intake(127);
-	delay(150);
+	delay(200);
 	set_ball_intake(0);
 
-	arm_pid.des = 600;
+	arm_pid.des = ARM_DOWN;
 }
 
 task
@@ -134,7 +128,19 @@ ball_intake_task() {
 			startTask(arm_pid_task);
 			is_arm_pid = true;
 
-			indexer();
+			arm_pid.des = INDEXER;
+			delay(250);
+
+			set_ball_intake(127);
+			delay(200);
+
+			while (vexRT[Btn5U]) {
+				set_ball_intake(50);
+				delay(20);
+			}
+			set_ball_intake(0);
+
+			arm_pid.des = ARM_DOWN;
 
 			startTask(lift);
 		}
