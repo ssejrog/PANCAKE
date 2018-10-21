@@ -112,6 +112,11 @@ intake_ball_auton() {
 	wait_for(&l_drive, &r_drive);
 	set_ball_intake(0);
 	delay(250);
+}
+
+void
+flag_auton() {
+	intake_ball_auton();
 
 	//Turn to face flag
 	turn_constants();
@@ -157,11 +162,6 @@ intake_ball_auton() {
 	auton_drive(1300, 2250);
 	wait_for(&l_drive, &r_drive);
 	delay(200);
-}
-
-void
-flag_auton() {
-	intake_ball_auton();
 
 	//Turn
 	//wait_for(&l_drive, &r_drive);
