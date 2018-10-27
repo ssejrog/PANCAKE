@@ -30,7 +30,7 @@ CONTROLS:
 8U- Wrist Flip Toggle
 */
 
-#define REINTAKE_CAP 570
+#define REINTAKE_CAP 620
 #define DESCORE 1290
 #define INDEXER  1870
 #define ARM_DOWN 2310
@@ -44,15 +44,13 @@ CONTROLS:
 #include "flywheel.c"
 #include "DriveFunctions.c"
 #include "Auton.c"
+#include "LCD.c"
 
-//Pre Auton and LCD Control
-const int kMaxNumberOfPages = 5;
-const int kMinNumberOfPages = 1;
-int iAuton = 1;
-string rgSAuton[kMaxNumberOfPages] = {"RED CAP", "RED FLAG", "BLUE CAP", "BLUE FLAG", "NONE"};
 void
 pre_auton() {
 	flywheel_graph = false; //Make true if you want to graph target vs current velocity
+	bStopTasksBetweenModes = true; //Make this true if you want tasks to stop between modes
+	bDisplayCompetitionStatusOnLcd = false; //Make this true if you want the gross default LCD stuff
 
 	//Clearing some stuffz
 	clear_encoder();
@@ -74,29 +72,6 @@ pre_auton() {
 	pid_init(&arm_pid, 0.17, 0.00001, 13.5);
 	pid_threshold(&arm_pid, 20);
 	pid_i_threshold(&arm_pid, 100);
-
-	//LCD Code, will only run when competition control is in DISABLED mode
-	bLCDBacklight = true;
-	while(!bIfiAutonomousMode && bIfiRobotDisabled) {
-		if(nLCDButtons == 1) {
-			iAuton = iAuton == kMinNumberOfPages ? kMaxNumberOfPages : iAuton - 1;
-			wait_for_release();
-		}
-		if(nLCDButtons == 4) {
-			iAuton = iAuton == kMaxNumberOfPages ? kMinNumberOfPages : iAuton + 1;
-			wait_for_release();
-		}
-		if(nLCDButtons == 2) {
-			wait_for_release();
-			break;
-		}
-
-		displayLCDCenteredString(0, rgSAuton[iAuton - 1]);
-		displayLCDCenteredString( 1, "<    Select    >");
-		delay(50);
-		clear_lcd_lines();
-	}
-	bLCDBacklight = false;
 }
 
 //Auton

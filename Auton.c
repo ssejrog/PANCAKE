@@ -6,78 +6,78 @@
 //Intake Ball under Cap
 void
 intake_ball_auton() {
-	flywheel_toggle = true;
-	high_flag();
+flywheel_toggle = true;
+high_flag();
 
-	//Drive Forward to ball
-	drive_pid_lim = 50;
-	auton_drive(5250,  5250);
-	wait_for(&l_drive, &r_drive);
-	stopTask(drive_pid_task);
-	drive_pid_lim = 70;
+//Drive Forward to ball
+drive_pid_lim = 50;
+auton_drive(5250,  5250);
+wait_for(&l_drive, &r_drive);
+stopTask(drive_pid_task);
+drive_pid_lim = 70;
 
-	//Intake ball
-	set_tank(20, 20);
-	set_ball_intake(127);
-	delay(1000);
-	set_tank(00, 00);
-	//delay(250);
-	set_ball_intake(0);
-	set_tank(0, 0);
-	//850
+//Intake ball
+set_tank(20, 20);
+set_ball_intake(127);
+delay(1000);
+set_tank(00, 00);
+//delay(250);
+set_ball_intake(0);
+set_tank(0, 0);
+//850
 
-	//Drive Back
-	auton_drive(-400, -400);
-	startTask(drive_pid_task);
-	wait_for(&l_drive, &r_drive);
-	delay(350);
+//Drive Back
+auton_drive(-400, -400);
+startTask(drive_pid_task);
+wait_for(&l_drive, &r_drive);
+delay(350);
 }
 
 //Ideally, intake ball under cap and score all 3 flags
 void
 flag_auton() {
-	intake_ball_auton();
+intake_ball_auton();
 
-	//Turn
-	drive_pid_lim = 127;
-	auton_drive(-2100, 1800);
-	wait_for(&l_drive, &r_drive);
-	delay(350);
-	drive_pid_lim = 70;
+//Turn
+drive_pid_lim = 127;
+auton_drive(-2100, 1800);
+wait_for(&l_drive, &r_drive);
+delay(350);
+drive_pid_lim = 70;
 
-	//Go forward to fully align with top flag
-	auton_drive(1100, 4600); //4900
-	wait_for(&l_drive, &r_drive);
-	delay(250);
+//Go forward to fully align with top flag
+auton_drive(1100, 4600); //4900
+wait_for(&l_drive, &r_drive);
+delay(250);
 
-	//run intake a little bit
-	set_ball_intake(127);
-	delay(850);
-	set_ball_intake(0);
-	delay(350);
+//run intake a little bit
+set_ball_intake(127);
+delay(850);
+set_ball_intake(0);
+delay(350);
 
 
-	//Align with middle flag
-	auton_drive(3000, 6300);
-	wait_for(&l_drive, &r_drive);
-	delay(250);
+//Align with middle flag
+auton_drive(3000, 6300);
+wait_for(&l_drive, &r_drive);
+delay(250);
 
-	//Score last ball
-	set_ball_intake(127);
-	delay(850);
-	set_ball_intake(0);
-	delay(350);
+//Score last ball
+set_ball_intake(127);
+delay(850);
+set_ball_intake(0);
+delay(350);
 
-	//Turn
-	drive_pid_lim = 127;
-	auton_drive(4000,7300);
-	//wait_for(&l_drive, &r_drive);
-	delay(1000);
-	drive_pid_lim = 70;
+//Turn
+drive_pid_lim = 127;
+auton_drive(4000,7300);
+//wait_for(&l_drive, &r_drive);
+delay(1000);
+drive_pid_lim = 70;
 
-	//hit bottom flag
-	auton_drive(5000, 9300);
-	wait_for(&l_drive, &r_drive);
+//hit bottom flag
+auton_drive(5000, 9300);
+wait_for(&l_drive, &r_drive);
 }
 */
 
@@ -117,7 +117,6 @@ intake_ball_auton() {
 void
 flag_auton() {
 	intake_ball_auton();
-
 	//Turn to face flag
 	turn_constants();
 	auton_drive(-385, 385);
@@ -150,7 +149,6 @@ flag_auton() {
 	indexer();
 	delay(500);
 
-
 	//Turn to hit bottom flag
 	turn_constants();
 	auton_drive(680, 1670);
@@ -162,7 +160,6 @@ flag_auton() {
 	auton_drive(1300, 2250);
 	wait_for(&l_drive, &r_drive);
 	delay(200);
-
 	//Turn
 	//wait_for(&l_drive, &r_drive);
 

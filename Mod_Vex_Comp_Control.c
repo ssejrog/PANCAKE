@@ -48,6 +48,7 @@
 void pre_auton();
 task autonomous();
 task usercontrol();
+task LCD();
 
 // This global controls whether this template stops tasks when the robot becomes
 // disabled.
@@ -78,9 +79,10 @@ task main()
 	clearLCDLine(0);
 	clearLCDLine(1);
 	displayLCDPos(0, 0);
-	displayNextLCDString("Startup");
+	displayNextLCDString("Getting Pancakes");
 	wait1Msec(500);
 	clearLCDLine(0);
+	startTask(LCD);
 
 	// Call pre_auton function where the user can initialize sensors and variables
 	pre_auton();
@@ -116,6 +118,7 @@ task main()
 		{
 			// Start the autonomous task
 		  startTask(autonomous);
+		  startTask(LCD);
 
 			// Waiting for autonomous phase to end
 			while (bIfiAutonomousMode && !bIfiRobotDisabled)
@@ -131,6 +134,7 @@ task main()
 		  if(bStopTasksBetweenModes)
 		  {
 			  allTasksStop();
+			  startTask(LCD);
 			}
 		}
 
@@ -138,6 +142,7 @@ task main()
 		{
 			// Start the usercontrol task
 			startTask(usercontrol);
+			startTask(LCD);
 
 			// Here we repeat loop waiting for user control to end and (optionally) start
 			// of a new competition run
@@ -151,6 +156,7 @@ task main()
 		  if(bStopTasksBetweenModes)
 		  {
 			  allTasksStop();
+			  startTask(LCD);
 			}
 		}
 	}

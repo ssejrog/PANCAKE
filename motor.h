@@ -63,7 +63,7 @@ get_l_drive_sensor() {
 //Get Right Drive Sensor
 int
 get_r_drive_sensor() {
-	return -SensorValue[right_drive_encoder];
+	return SensorValue[right_drive_encoder];
 }
 
 //Clear All Encoders
