@@ -5,6 +5,12 @@ turn_constants() {
 }
 
 void
+turn_constants_two() {
+	pid_init(&l_drive, 0.7, 0.0004, 18);
+	pid_init(&r_drive, 0.7, 0.0004, 18);
+}
+
+void
 drive_constants() {
 	pid_init(&l_drive, 0.3, 0.00013, 25);
 	pid_init(&r_drive, 0.3, 0.00013, 25);
@@ -84,7 +90,7 @@ drive_control() {
 		}
 
 		//Send motor power
-		set_tank(l_output, r_output);
+set_tank(l_output, r_output);
 
 		delay(20);
 	}

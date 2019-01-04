@@ -3,11 +3,6 @@ task
 arm_pid_task() {
 	while (true) {
 		update_pid(&arm_pid, get_arm_sensor(), arm_pid.des);
-
-		//if (-arm_pid.motor_value <= -60) {
-		//	arm_pid.motor_value = 60;
-		//}
-
 		set_lift(-arm_pid.motor_value);
 
 		delay(20);
@@ -15,29 +10,59 @@ arm_pid_task() {
 }
 
 //Manual toggle for wirst
+/*
 task
 wrist() {
-	bool flip;
-	int i;
-	while (true) {
-		if (vexRT[Btn8U]) {
-			delay(50);
+bool flip;
+int i;
+while (true) {
+if (vexRT[Btn8U]) {
+delay(50);
 
-			i = flip ? 1 : -1;
+i = flip ? 1 : -1;
 
-			set_wrist(127*i);
-			delay(450);
-			set_wrist(15*i);
+set_wrist(127*i);
+delay(100);
+set_wrist(127*i);
+delay(100);
+set_wrist(127*i);
+delay(100);
+set_wrist(127*i);
+delay(100);
+set_wrist(127*i);
+delay(50);
+set_wrist(15*i);
 
-			flip = !flip;
+flip = !flip;
 
-			while (vexRT[Btn8U]) {
-				delay(1);
-			}
-		}
+while (vexRT[Btn8U]) {
+delay(1);
+}
+}
 
-		delay(20);
-	}
+delay(20);
+}
+}
+*/
+
+static bool bflip;
+void
+wrist() {
+	bflip = !bflip;
+
+	int i = bflip ? 1 : -1;
+
+	set_wrist(127*i);
+	delay(100);
+	set_wrist(127*i);
+	delay(100);
+	set_wrist(127*i);
+	delay(100);
+	set_wrist(127*i);
+	delay(100);
+	set_wrist(127*i);
+	delay(50);
+	set_wrist(15*i);
 }
 
 //Returns true if arm is down

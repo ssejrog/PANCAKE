@@ -30,7 +30,7 @@ CONTROLS:
 8U- Wrist Flip Toggle
 */
 
-#define REINTAKE_CAP 620
+#define REINTAKE_CAP 660
 #define DESCORE 1290
 #define INDEXER  1870
 #define ARM_DOWN 2310
@@ -75,6 +75,7 @@ pre_auton() {
 }
 
 //Auton
+//string rgSAuton[kMaxNumberOfPages] = {"RED CAP", "RED F FLAG", "RED B FLAG", "BLUE CAP", "BLUE F FLAG", "BLUE B FLAG", "NONE"};
 task
 autonomous() {
 	clear_encoder();
@@ -86,29 +87,45 @@ autonomous() {
 
 	//Run auton based off of LCD selection
 	switch (iAuton) {
-		//RED FLAG
+		//RED CAP
 	case 1:
 		bFlip = false;
 		intake_ball_auton();
 		break;
-		//RED CAP
+
+		//RED F CAP
 	case 2:
 		bFlip = false;
 		flag_auton();
 		break;
-		//BLUE FLAG
+
+		//RED B CAP
 	case 3:
-		bFlip = true;
-		intake_ball_auton();
+		bFlip = false;
+		back_ball_auton();
 		break;
+
 		//BLUE CAP
 	case 4:
 		bFlip = true;
+		intake_ball_auton();
+		break;
+
+		//BLUE F CAP
+	case 5:
+		bFlip = true;
 		flag_auton();
 		break;
+
+		//BLUE B CAP
+	case 6:
+		bFlip = true;
+		back_ball_auton();
+
 		//NONE
-	case 5:
+	case 7:
 		break;
+
 		//DEFAULT
 	default:
 		break;
@@ -124,12 +141,14 @@ autonomous() {
 task
 usercontrol() {
 	clear_encoder();
-	startTask(wrist);
+	//startTask(wrist);
 	startTask(lift);
 	startTask(flywheel);
 	startTask(flywheel_rpm_task);
 	startTask(drive_control);
 	startTask(ball_intake_task);
+	bool bprevious;
+	bool bcurrent;
 	while (true) {
 		if (vexRT[Btn7U]) {
 			high_flag();
@@ -142,6 +161,24 @@ usercontrol() {
 				delay(1);
 			}
 		}
+
+		if (vexRT[Btn8U]) {
+			if (!bprevious) {
+				bcurrent = true;
+			}
+			else {
+				bcurrent = false;
+			}
+		}
+		else {
+			bcurrent = false;
+		}
+		bprevious = (bool)vexRT[Btn8D];
+
+		if (bcurrent) {
+			wrist();
+		}
+
 
 		delay(20);
 	}

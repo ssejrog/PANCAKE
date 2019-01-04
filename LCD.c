@@ -1,8 +1,8 @@
 //Pre Auton and LCD Control
-const int kMaxNumberOfPages = 5;
+const int kMaxNumberOfPages = 7;
 const int kMinNumberOfPages = 1;
 int iAuton = 1;
-string rgSAuton[kMaxNumberOfPages] = {"RED CAP", "RED FLAG", "BLUE CAP", "BLUE FLAG", "NONE"};
+string rgSAuton[kMaxNumberOfPages] = {"RED CAP", "RED F FLAG", "RED B FLAG", "BLUE CAP", "BLUE F FLAG", "BLUE B FLAG", "NONE"};
 
 task
 LCD() {

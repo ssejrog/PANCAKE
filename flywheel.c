@@ -27,8 +27,20 @@ int target_velocity;
 int predicted_power;
 void
 high_flag() {
-	target_velocity = 420;
-	predicted_power = 100;
+	target_velocity = 430;
+	predicted_power = 110;
+}
+
+void
+auton_mid_flag() {
+	target_velocity = 368;
+	predicted_power = 55;
+}
+
+void
+auton_top_flag() {
+	target_velocity = 395;
+	predicted_power = 80;
 }
 
 //Flywheel logic
